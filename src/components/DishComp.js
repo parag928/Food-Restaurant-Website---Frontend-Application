@@ -1,14 +1,7 @@
-import { Tab } from 'bootstrap';
 import React, { Component } from 'react';
 import {Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle} from 'reactstrap';
 
 class DishDetail extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-        }
-    }
-
 
     renderDish(dish){
         return(
@@ -27,13 +20,13 @@ class DishDetail extends Component{
             if (all != null){
                 return (
                     <div>
-                        <ul className = "comments">
-                            <comment>
+                        <ul className = "list-unstyled">
+                            <li>
                                 {all.comment}
-                            </comment>
-                            <ol>
-                             {all.author} {all.date}
-                            </ol>
+                            </li>
+                            <p>
+                             {all.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(all.date)))}
+                            </p>
                         </ul>
                     </div>
                 )
