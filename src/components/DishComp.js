@@ -45,14 +45,16 @@ import {Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle} from 'reac
     }
 
     const DishDetail = (props) => {
-        if (props.selectedDish != null){
+        if (props.mydish != null){
             return(
-                <div class="row">
-                    <div class="col-12 col-md-6 mt-5 mb-5">
-                        <RenderDish dish1 = {props.mydish} />
-                    </div>
-                    <div className = "col-12 col-md-5 mt-5">
-                        <RenderComments Comments = {props.mydish.comments} />
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-md-6 mt-5 mb-5">
+                            <RenderDish dish1 = {props.mydish} />
+                        </div>
+                        <div className = "col-12 col-md-5 mt-5" width="100%">
+                            <RenderComments Comments = {props.mydish.comments} />
+                        </div>
                     </div>
                 </div>
             );
