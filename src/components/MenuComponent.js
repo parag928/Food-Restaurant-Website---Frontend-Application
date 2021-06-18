@@ -1,15 +1,18 @@
 import React from 'react';
-import {Card, CardImg, CardImgOverlay, CardTitle} from 'reactstrap';
+import {Card, CardImg, CardImgOverlay, CardTitle, Breadcrumb, BreadcrumbItem} from 'reactstrap';
+import { Link } from 'react-router-dom';
 
     function RenderMenu ({dish}) {
         return (
             <Card >
-                <CardImg height = "400px" width= "100%" object src={dish.image} alt={dish.name}/>
-                <CardImgOverlay>
-                    <CardTitle>
-                        {dish.name}
-                    </CardTitle>
-                </CardImgOverlay>
+                <Link to={`/menu/${dish.id}`} >
+                    <CardImg height = "400px" width= "100%" object src={dish.image} alt={dish.name}/>
+                    <CardImgOverlay>
+                        <CardTitle>
+                            {dish.name}
+                        </CardTitle>
+                    </CardImgOverlay>
+                </Link>
             </Card>
         );
     }
@@ -24,6 +27,16 @@ import {Card, CardImg, CardImgOverlay, CardTitle} from 'reactstrap';
         });
         return (
             <div className="container">
+                <div className="row">
+                    <Breadcrumb>
+                        <BreadcrumbItem><Link to="/home"> Home </Link></BreadcrumbItem>
+                        <BreadcrumbItem active> Menu </BreadcrumbItem>
+                    </Breadcrumb>
+                </div>
+                <div className="col-12">
+                    <h3>Menu</h3>
+                    <hr />
+                </div>   
                 <div className="row">
                     {mymenu}
                 </div>

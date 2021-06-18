@@ -2,11 +2,17 @@ import React, {Component} from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Navbar, NavbarBrand } from 'reactstrap';
 import MyHeader from './Header';
-import MyFooter from './Foot';
+import MyFooter from './Footer';
 import Menu from './MenuComponent';
 import DishDetail from './DishComp';
+import ContactUs from './Contact';
 import Home from './Home';
-import {DISHES} from './dishes'
+import {DISHES} from '../shared/dishes'
+import {LEADERS} from '../shared/leaders'
+import {PROMOTIONS} from '../shared/promotions'
+import {COMMENTS} from '../shared/comments'
+
+import { Link } from 'react-router-dom';
 
 
 class Main extends Component {
@@ -14,36 +20,46 @@ class Main extends Component {
     super(props);
     this.state = {
       dishes: DISHES,
-      selectedDish: null
+      leaders: LEADERS,
+      promotions: PROMOTIONS,
+      comments: COMMENTS
+    };
+  }
+
+  render() {
+    const ShowHome = () => {
+      return (
+        <Home dish = {this.state.dishes.filter((dish) => dish.featured)[0]} 
+              leader = {this.state.leaders.filter((leader) => leader.featured)[0]}
+              promo = {this.state.promotions.filter((promo) => promo.featured)[0]} 
+        />
+      );
     }
-  }
 
-  setDish(myDish){
-    this.setState({selectedDish: myDish});
-  }
-
-  showHome(){
-    return (
-      <Home />
-    );
-  }
+    const DishID = ({match}) => {
+      return(
+        <DishDetail mydish = {this.state.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]}
+                    thecomment = {this.state.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
+        />
+      );
+    }
   
-  render(){
+  
     return (
       //react application rendered in the page
       <div>
         <MyHeader />
         <Switch>
-          <Route path='/home' component={this.showHome} />
+          <Route path='/home' component={ShowHome} />
           <Route exact path='/menu' component={() => <Menu dishes={this.state.dishes} />} />
+          <Route path='/menu/:dishId' component={DishID} />
+          <Route exact path='/contactus' component={ContactUs} />
           <Redirect to="/home" />
-          <Menu dishes = {this.state.dishes} onClick={(dishID) => this.setDish(dishID)}/>
-          <DishDetail mydish = {this.state.dishes.filter((mydish) => mydish.id == this.state.selectedDish)[0]}/>
         </Switch>
         <MyFooter />
       </div>
-    )
-  };
+    );
+  }
 }
 
 export default Main;

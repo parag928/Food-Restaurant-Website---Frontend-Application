@@ -12,16 +12,9 @@ class MyHeader extends Component {
   }
 
   NavbarChange(){
-    if ( this.NavOpen == false){
-      this.setState({
-        NavOpen: true
-      })
-    }
-    else{
-      this.setState({
-        NavOpen: false
-      })
-    }
+    this.setState({
+      NavOpen: !(this.state.NavOpen)
+    })
   }
 
   
@@ -33,19 +26,19 @@ class MyHeader extends Component {
           <NavbarToggler onClick={this.NavbarChange} />
             <NavbarBrand className="mr-auto" href="/"> <img src='assets/images/logo.png' height="30" width="41" alt='Ristorante Con Fusion' /></NavbarBrand>
             <Collapse isOpen={this.state.isNavOpen} navbar>
-                <Nav navbar className="myNav">
-                <NavItem>
-                    <NavLink className="nav-link"  to='/home'><span className="fa fa-home fa-lg"></span> Home</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink className="nav-link" to='/aboutus'><span className="fa fa-info fa-lg"></span> About Us</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink className="nav-link"  to='/menu'><span className="fa fa-list fa-lg"></span> Menu</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink className="nav-link" to='/contactus'><span className="fa fa-address-card fa-lg"></span> Contact Us</NavLink>
-                </NavItem>
+                <Nav navbar>
+                  <NavItem>
+                      <NavLink className="nav-link"  to='/home'><span className="fa fa-home fa-lg"></span> Home</NavLink>
+                  </NavItem>
+                  <NavItem>
+                      <NavLink className="nav-link" to='/aboutus'><span className="fa fa-info fa-lg"></span> About Us</NavLink>
+                  </NavItem>
+                  <NavItem>
+                      <NavLink className="nav-link"  to='/menu'><span className="fa fa-list fa-lg"></span> Menu</NavLink>
+                  </NavItem>
+                  <NavItem>
+                      <NavLink className="nav-link" to='/contactus'><span className="fa fa-address-card fa-lg"></span> Contact Us</NavLink>
+                  </NavItem>
                 </Nav>
             </Collapse>
         </div>
