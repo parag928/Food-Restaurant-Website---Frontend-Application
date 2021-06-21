@@ -5,15 +5,13 @@ import MyHeader from './Header';
 import MyFooter from './Footer';
 import Menu from './MenuComponent';
 import DishDetail from './DishComp';
-import ContactUs from './Contact';
+import Contact from './Contact';
 import Home from './Home';
 import {DISHES} from '../shared/dishes'
 import {LEADERS} from '../shared/leaders'
 import {PROMOTIONS} from '../shared/promotions'
 import {COMMENTS} from '../shared/comments'
-
-import { Link } from 'react-router-dom';
-
+import About from '../components/AboutComponent'
 
 class Main extends Component {
   constructor(props){
@@ -53,7 +51,8 @@ class Main extends Component {
           <Route path='/home' component={ShowHome} />
           <Route exact path='/menu' component={() => <Menu dishes={this.state.dishes} />} />
           <Route path='/menu/:dishId' component={DishID} />
-          <Route exact path='/contactus' component={ContactUs} />
+          <Route exact path='/contactus' component={Contact} />
+          <Route exact path='/aboutus' component={() => <About leaders = {this.state.leaders} />} />
           <Redirect to="/home" />
         </Switch>
         <MyFooter />

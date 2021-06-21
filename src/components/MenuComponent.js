@@ -37,7 +37,7 @@ import { Link } from 'react-router-dom';
                     <h3>Menu</h3>
                     <hr />
                 </div>   
-                <div className="row">
+                <div className="row mb-4">
                     {mymenu}
                 </div>
             </div>
