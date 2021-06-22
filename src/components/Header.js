@@ -1,20 +1,38 @@
 import React, { Component } from 'react';
-import { Nav, Navbar, NavbarBrand, NavbarToggler, Collapse, NavItem, Jumbotron } from 'reactstrap';
+import { Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron,
+  Button, Modal, ModalHeader, ModalBody,
+  Form, FormGroup, Input, Label} from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 
 class MyHeader extends Component {
   constructor(props){
     super(props);
-    this.NavbarChange = this.NavbarChange.bind(this);
     this.state = {
-      NavOpen: false
+      NavOpen: false,
+      isModalOpen: false
     };
+    this.NavbarChange = this.NavbarChange.bind(this);
+    this.ModalChange = this.ModalChange.bind(this);
+    this.userLogin = this.userLogin.bind(this);
   }
 
   NavbarChange(){
     this.setState({
-      NavOpen: !(this.state.NavOpen)
+      NavOpen: !this.state.NavOpen
     })
+  }
+
+  ModalChange(){
+    this.setState({
+      isModalOpen: !this.state.isModalOpen
+    })
+  }
+
+  userLogin(event) {
+    this.ModalCHange();
+    alert("Username: " + event.username.value + " Password: " + event.password.value
+        + " Remember: " + event.remember.checked);
+    event.preventDefault();
   }
 
   
@@ -39,10 +57,41 @@ class MyHeader extends Component {
                   <NavItem>
                       <NavLink className="nav-link" to='/contactus'><span className="fa fa-address-card fa-lg"></span> Contact Us</NavLink>
                   </NavItem>
+                  
+                </Nav>
+                <Nav className="ml-auto" navbar>
+                    <NavItem>
+                        <Button outline dark onClick={this.ModalChange}><span className="fa fa-sign-in fa-lg"></span> Login</Button>
+                    </NavItem>
                 </Nav>
             </Collapse>
         </div>
       </Navbar>
+      <Modal isOpen={this.state.isModalOpen} toggle={this.ModalChange}>
+          <ModalHeader toggle={this.ModalChange}> Login </ModalHeader>
+            <ModalBody>
+              <Form onSubmit={this.userLogin}>
+                  <FormGroup>
+                      <Label htmlFor="username">Username</Label>
+                      <Input type="text" id="username" name="username"
+                          innerRef={(input) => this.username = input} />
+                  </FormGroup>
+                  <FormGroup>
+                      <Label htmlFor="password">Password</Label>
+                      <Input type="password" id="password" name="password"
+                          innerRef={(input) => this.password = input}  />
+                  </FormGroup>
+                  <FormGroup check>
+                      <Label check>
+                          <Input type="checkbox" name="remember"
+                          innerRef={(input) => this.remember = input}  />
+                          Remember me
+                      </Label>
+                  </FormGroup>
+                  <Button type="submit" value="submit" color="primary">Login</Button>
+                </Form>
+            </ModalBody>
+      </Modal>
       <Jumbotron>
            <div className="container">
                <div className="row row-header">
