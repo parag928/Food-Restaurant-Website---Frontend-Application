@@ -20,9 +20,9 @@ class Contact extends Component{
         //this.handleBlur = this.handleBlur.bind(this);
     }
 
-    changeSubmit(event){
-        console.log('The current User Account Info is: ' + JSON.stringify(this.state));
-        alert('Current Account is: ' + JSON.stringify(this.state));
+    changeSubmit(values){
+        console.log('The current User Account Info is: ' + JSON.stringify(values));
+        alert('Current Account is: ' + JSON.stringify(values));
         //event.preventDefault(); //to prevent you from going to different page
     }
 

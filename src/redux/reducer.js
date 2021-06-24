@@ -1,25 +1,17 @@
-import { createStore } from 'redux';
-import {DISHES} from '../shared/dishes'
-import {LEADERS} from '../shared/leaders'
-import {PROMOTIONS} from '../shared/promotions'
-import {COMMENTS} from '../shared/comments'
-
-const initialState = {
-    dishes: DISHES,
-    leaders: LEADERS,
-    promotions: PROMOTIONS,
-    comments: COMMENTS
-};
-
-const reducerFunction = (mystate = initialState, myaction) => {
-    return mystate;
-};
+import {createStore, combineReducers} from 'redux';
+import { Dishes } from './dishes';
+import { Comments } from './comments';
+import { Promotions } from './promotions';
+import { Leaders } from './leaders';
 
 export const ConfigureStore = () => {
-    const mystore = createStore(
-        reducerFunction, // reducer
-        initialState, // our initialState
+    const store = createStore(
+        combineReducers({
+            dishes: Dishes,
+            comments: Comments,
+            promotions: Promotions,
+            leaders: Leaders
+        })
     );
-
-    return mystore;
+    return store;
 }
