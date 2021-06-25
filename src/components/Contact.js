@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import { Breadcrumb, BreadcrumbItem, Button, Row, Col, Label } from 'reactstrap';
-import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Control, Form, Errors, actions } from 'react-redux-form';
 import { Link } from 'react-router-dom';
 
-const feedbacklength = (myval) => myval && (myval.length < 1);
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
@@ -23,6 +22,7 @@ class Contact extends Component{
     changeSubmit(values){
         console.log('The current User Account Info is: ' + JSON.stringify(values));
         alert('Current Account is: ' + JSON.stringify(values));
+        this.props.resetFeedbackForm();
         //event.preventDefault(); //to prevent you from going to different page
     }
 
@@ -44,8 +44,8 @@ class Contact extends Component{
                       <h3>Send us your Feedback</h3>
                    </div>
                     <div className="col-12 col-md-9">
-                        <LocalForm onSubmit={(values) => this.changeSubmit(values)}>
-                        <Row className="form-group">
+                        <Form model="feedback" onSubmit={(values) => this.changeSubmit(values)}>
+                            <Row className="form-group">
                                 <Label htmlFor="firstname" md={2}>First Name</Label>
                                 <Col md={10}>
                                     <Control.text model=".firstname" id="firstname" name="firstname"
@@ -159,14 +159,14 @@ class Contact extends Component{
                                         rows="12"
                                         className="form-control" 
                                         validators = {{
-                                            feedbacklength
+                                            required
                                         }}/>
                                     <Errors
                                         className="text-danger"
                                         model=".message"
                                         show="touched"
                                         messages={{
-                                            feedbacklength: 'Cannot leave blank!',
+                                            required: 'Cannot leave blank!',
                                         }}
                                      />
                                 </Col>
@@ -174,11 +174,11 @@ class Contact extends Component{
                             <Row className="form-group">
                                 <Col md={{size:10, offset: 2}}>
                                     <Button type="submit" color="primary">
-                                    Send Feedback
+                                        Send Feedback
                                     </Button>
                                 </Col>
                             </Row>
-                        </LocalForm>
+                        </Form>
                     </div>
                </div>
                 <div className="row row-content">

@@ -2,7 +2,8 @@ import {React, Component} from 'react';
 import {Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrumb, Button, Row, Col, Label, BreadcrumbItem, Modal, ModalHeader, ModalBody} from 'reactstrap';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Link } from 'react-router-dom';
-    
+import { Loading } from './LoadingLogo';
+ 
 const required = (val) => val && (val.length);
 const maxLength = (len) => (val) => !(val) || (val.length < len);
 const minLength = (len) => (val) => val && (val.length > len);
@@ -158,7 +159,25 @@ function RenderComments({Comments, dishID, addComm}){
 }
 
 const DishDetail = (props) => {
-    if (props.mydish != null){
+    if (props.thedishLoading) {
+        return(
+            <div className="container">
+                <div className="row">            
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    else if (props.thedishLoading) {
+        return(
+            <div className="container">
+                <div className="row">            
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    }
+    else if (props.mydish != null){
         return(
             <div class="container">
                 <div class="row">
