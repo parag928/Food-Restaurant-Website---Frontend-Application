@@ -2,13 +2,14 @@ import React from 'react';
 import {Card, CardImg, CardImgOverlay, CardTitle, Breadcrumb, BreadcrumbItem} from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Loading } from './LoadingLogo';
+import { baseUrl } from '../shared/baseURL';
 
 
     function RenderMenu ({dish}) {
         return (
             <Card >
                 <Link to={`/menu/${dish.id}`} >
-                    <CardImg height = "400px" width= "100%" object src={dish.image} alt={dish.name}/>
+                    <CardImg height = "400px" width= "100%" object src={baseUrl + dish.image} alt={dish.name}/>
                     <CardImgOverlay>
                         <CardTitle>
                             {dish.name}
@@ -30,7 +31,7 @@ import { Loading } from './LoadingLogo';
                     </div>
                 );
             }
-            else if (props.dishes.errMess) {
+            else if (props.dishes.isLoading) {
                 return(
                     <div className="container">
                         <div className="row"> 

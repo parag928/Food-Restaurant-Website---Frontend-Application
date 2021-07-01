@@ -3,6 +3,7 @@ import {Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrumb
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Link } from 'react-router-dom';
 import { Loading } from './LoadingLogo';
+import { baseUrl } from '../shared/baseURL';
  
 const required = (val) => val && (val.length);
 const maxLength = (len) => (val) => !(val) || (val.length < len);
@@ -26,7 +27,7 @@ class CommentForm extends Component{
     showChange(values){
         console.log('Your Current Comment Info is: ' + JSON.stringify(values));
         alert('Your Current Comment Info is: ' + JSON.stringify(values));
-        this.props.addComment(this.props.DishID, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.DishID, values.rating, values.author, values.comment);
 
     }
     render(){
@@ -36,7 +37,7 @@ class CommentForm extends Component{
                     <Modal isOpen={this.state.openModal} toggle={this.changeToggle}>
                         <ModalHeader toggle={this.changeToggle}> Submit Your Comment </ModalHeader>
                             <ModalBody>
-                                <LocalForm onSubmit={(values) => this.showChange(values)}>
+                                <LocalForm onSubmit={(answer) => this.showChange(answer)}>
                                     <Row className="form-group">
                                         <Label htmlFor="rating" md={2}>Rating</Label>
                                             <Col md={10}>
@@ -110,7 +111,7 @@ class CommentForm extends Component{
 function RenderDish({dish1}){
     return(
         <Card>
-            <CardImg height = "400px" width= "100%" top object src={dish1.image} alt={dish1.name} />
+            <CardImg height = "400px" width= "100%" top object src={baseUrl + dish1.image} alt={dish1.name} />
             <CardBody>
                 <CardTitle>{dish1.name}</CardTitle>
                 <CardText>{dish1.description}</CardText>
@@ -120,7 +121,7 @@ function RenderDish({dish1}){
 }
 
 
-function RenderComments({Comments, dishID, addComm}){
+function RenderComments({Comments, dishID, postComm}){
     const TheComments = Comments.map((all) => {
         if (all != null){
             return (
@@ -152,7 +153,7 @@ function RenderComments({Comments, dishID, addComm}){
             <br/>
             <br/>
             <div className="row">
-                <CommentForm DishID = {dishID} addComment = {addComm}/>
+                <CommentForm DishID = {dishID} postComment = {postComm}/>
             </div>
         </div>
     );
@@ -168,7 +169,7 @@ const DishDetail = (props) => {
             </div>
         );
     }
-    else if (props.thedishLoading) {
+    else if (props.thedishError) {
         return(
             <div className="container">
                 <div className="row">            
@@ -195,7 +196,7 @@ const DishDetail = (props) => {
                         <RenderDish dish1 = {props.mydish} />
                     </div>
                     <div className = "col-12 col-md-5 mt-5" width="100%">
-                        <RenderComments Comments = {props.thecomment} dishID = {props.mydish.id} addComm = {props.addComment}/>
+                        <RenderComments Comments = {props.thecomment} dishID = {props.mydish.id} postComm = {props.postComment}/>
                     </div>
                 </div>
             </div>
