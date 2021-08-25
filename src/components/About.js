@@ -1,17 +1,20 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { baseUrl } from '../shared/baseURL';
+
 
 function RenderLeader({theleader}){
     return(
-        <div class="media">
-            <img class="d-flex mr-3 mt-4 img-thumbnail align-self-top" src={theleader.image} alt={theleader.name}/>
-            <div class="media-body">    
-                <h2 class="mt-4"> {theleader.name}</h2>
-                <h5 > {theleader.designation} </h5>
-                <p class="d-none d-sm-block"> {theleader.description} </p>
+            <div class="media">
+                <img class="d-flex mr-3 mt-4 img-thumbnail align-self-top" width="325px" src={baseUrl + theleader.image} alt={theleader.name}/>
+                <div class="media-body">
+                    <h2 class="mt-4"> {theleader.name}</h2>
+                    <h5 > {theleader.designation} </h5>
+                    <p class="d-none d-sm-block"> {theleader.description} </p>
+                </div>
+                
             </div>
-        </div>
     );
 }
 
@@ -37,8 +40,7 @@ function About(props) {
             <div className="row row-content">
                 <div className="col-12 col-md-6">
                     <h2>Our History</h2>
-                    <p>Started in 2010, Ristorante con Fusion quickly established itself as a culinary icon par excellence in Hong Kong. With its unique brand of world fusion cuisine that can be found nowhere else, it enjoys patronage from the A-list clientele in Hong Kong.  Featuring four of the best three-star Michelin chefs in the world, you never know what will arrive on your plate the next time you visit us.</p>
-                    <p>The restaurant traces its humble beginnings to <em>The Frying Pan</em>, a successful chain started by our CEO, Mr. Peter Pan, that featured for the first time the world's best cuisines in a pan.</p>
+                    <p>Started in June 2021, This Food restaurant website provides unique dishes that are available for the users to view, and leave comments from the user who has already tried it </p>
                 </div>
                 <div className="col-12 col-md-5">
                     <Card>
@@ -46,26 +48,25 @@ function About(props) {
                         <CardBody>
                             <dl className="row p-1">
                                 <dt className="col-6">Started</dt>
-                                <dd className="col-6">3 Feb. 2013</dd>
-                                <dt className="col-6">Major Stake Holder</dt>
-                                <dd className="col-6">HK Fine Foods Inc.</dd>
-                                <dt className="col-6">Last Year's Turnover</dt>
-                                <dd className="col-6">$1,250,375</dd>
-                                <dt className="col-6">Employees</dt>
-                                <dd className="col-6">40</dd>
+                                <dd className="col-6">June 2021</dd>
+                                <dt className="col-6">Location</dt>
+                                <dd className="col-6">Laurel, Maryland, United States</dd>
+                                <dt className="col-6">Number of Employees</dt>
+                                <dd className="col-6">1</dd>
                             </dl>
                         </CardBody>
                     </Card>
                 </div>
+
                 <div className="col-12">
+                    <br></br>
                     <Card>
                         <CardBody className="bg-faded">
                             <blockquote className="blockquote">
-                                <p className="mb-0">You better cut the pizza in four pieces because
-                                    I'm not hungry enough to eat six.</p>
-                                <footer className="blockquote-footer">Yogi Berra,
-                                <cite title="Source Title">The Wit and Wisdom of Yogi Berra,
-                                    P. Pepe, Diversion Books, 2014</cite>
+                                <p className="mb-0"> Humor keeps us alive. Humor and food. Don't forget food. You can go a week without laughing. </p>
+                                <footer className="blockquote-footer"> Joss Whedon,
+                                <cite title="Source Title"> Food Quotes,
+                                © 2021 Goodreads, Inc. </cite>
                                 </footer>
                             </blockquote>
                         </CardBody>

@@ -1,13 +1,16 @@
 import {React, Component} from 'react';
-import {Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrumb, Button, Row, Col, Label, BreadcrumbItem, Modal, ModalHeader, ModalBody} from 'reactstrap';
+import {Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, Button, Row, Col, Label, BreadcrumbItem, Modal, ModalHeader, ModalBody} from 'reactstrap';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Link } from 'react-router-dom';
 import { Loading } from './LoadingLogo';
 import { baseUrl } from '../shared/baseURL';
+import { FadeTransform} from 'react-animation-components';
+
  
-const required = (val) => val && (val.length);
-const maxLength = (len) => (val) => !(val) || (val.length < len);
-const minLength = (len) => (val) => val && (val.length > len);
+const required = (value) => value && (value.length);
+const maxLength = (length) => (value) => !(value) || (value.length < length);
+const minLength = (length) => (value) => value && (value.length > length);
+
 
 class CommentForm extends Component{
     constructor(props){
@@ -20,15 +23,19 @@ class CommentForm extends Component{
     }
 
     changeToggle(){
-        this.setState({
-            openModal: !(this.state.openModal)
-        })
+        if (this.props.myuser === null){
+            alert('You must be logged in order to post a comment!')
+        }
+        else{
+            this.setState({
+                openModal: !(this.state.openModal)
+            })
+        }
     }
+    
     showChange(values){
         console.log('Your Current Comment Info is: ' + JSON.stringify(values));
-        alert('Your Current Comment Info is: ' + JSON.stringify(values));
-        this.props.postComment(this.props.DishID, values.rating, values.author, values.comment);
-
+        this.props.postComment(this.props.totalcomm, this.props.DishID, values.rating, this.props.myuser.firstname + ' ' + this.props.myuser.lastname, values.comment);
     }
     render(){
         return(
@@ -51,29 +58,7 @@ class CommentForm extends Component{
                                                 </Control.select>
                                             </Col>
                                     </Row>
-                                    <Row className="form-group">
-                                        <Label htmlFor="author" md={2}>Your Name</Label>
-                                        <Col md={10}>
-                                            <Control.text model=".author" id="author" name="author" 
-                                            className="form-control" placeholder="Full Name"
-                                            validators = {{
-                                                required, minlength: minLength(3), maxlength: maxLength(15)
-                                            }}
-                                            >
-                                            </Control.text>
-                                        
-                                            <Errors
-                                                className="text-danger"
-                                                model=".author"
-                                                show="touched"
-                                                messages={{
-                                                    required: 'Required field',
-                                                    minlength: 'Must be greater than 2 characters',
-                                                    maxlength: 'Must be 15 characters or less'
-                                                }}
-                                            />
-                                        </Col>
-                                    </Row>
+
                                     <Row className="form-group">
                                         <Label htmlFor="comment" md={2}>Comment</Label>
                                         <Col md={{size:10}}>
@@ -96,7 +81,7 @@ class CommentForm extends Component{
                                     <Row className="form-group">
                                         <Col md={{size:3, offset: 2}}>
                                             <Button type="submit" color="primary">
-                                                Log in
+                                                Submit a Comment
                                             </Button>
                                         </Col>
                                     </Row>
@@ -104,6 +89,30 @@ class CommentForm extends Component{
                             </ModalBody>
                     </Modal>
             </div>
+        );
+    }
+}
+
+class AddCart extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+        }
+        this.addDishes = this.addDishes.bind(this);
+    }
+
+    addDishes(){
+        if (this.props.myUser === null){
+            alert('You must be logged in to add to cart')
+        }
+        else{
+            this.props.addToCart(this.props.myDish._id, this.props.myUser._id);
+        }
+    }
+
+    render(){
+        return(
+            <Button onClick = {this.addDishes} color="primary" className="ml-2" ml-5 > <span className="fa fa-shopping-cart fa-lg "></span> Add to Cart </Button>
         );
     }
 }
@@ -121,7 +130,7 @@ function RenderDish({dish1}){
 }
 
 
-function RenderComments({Comments, dishID, postComm}){
+function RenderComments({user, totalcomm, Comments, dishID, postComm}){
     const TheComments = Comments.map((all) => {
         if (all != null){
             return (
@@ -130,8 +139,9 @@ function RenderComments({Comments, dishID, postComm}){
                         <li>
                             {all.comment}
                         </li>
+                        
                         <p>
-                            --- {all.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(all.date)))}
+                            -- Author: {all.author}, Rating: {all.rating} / 5, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(all.date)))}
                         </p>
                     </ul>
                 </div>
@@ -149,11 +159,12 @@ function RenderComments({Comments, dishID, postComm}){
     return (
         <div>
             <h4 className="text-center"> Comments </h4>
-            {TheComments};
-            <br/>
-            <br/>
+                {TheComments};
+
+            <br/><br/>
+
             <div className="row">
-                <CommentForm DishID = {dishID} postComment = {postComm}/>
+                <CommentForm myuser = {user} totalcomm = {totalcomm} DishID = {dishID} postComment = {postComm}/>
             </div>
         </div>
     );
@@ -183,21 +194,34 @@ const DishDetail = (props) => {
             <div class="container">
                 <div class="row">
                     <Breadcrumb>
+                        <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
                         <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
                         <BreadcrumbItem active>{props.mydish.name}</BreadcrumbItem>
                     </Breadcrumb>
-                    <div className="col-12">
-                        <h3>{props.mydish.name}</h3>
-                        <hr />
-                    </div>                
                 </div>
                 <div class="row">
-                    <div class="col-12 col-md-6 mt-5 mb-5">
-                        <RenderDish dish1 = {props.mydish} />
+                    <div className="col-6 col-md-4">
+                        <h3>{props.mydish.name}</h3>
                     </div>
-                    <div className = "col-12 col-md-5 mt-5" width="100%">
-                        <RenderComments Comments = {props.thecomment} dishID = {props.mydish.id} postComm = {props.postComment}/>
-                    </div>
+                    <div className="col-6 offset-md-5 col-md-3">
+                        <AddCart myDish = {props.mydish} myUser = {props.myuser} addToCart = {props.addToCart}/>  
+                    </div>     
+                </div>
+                <hr></hr>
+                <div>
+                    <FadeTransform in transformProps={{ exitTransform: 'scale(0.5) translateY(-50%)'}}>
+                        <div class="row">
+                            <div class="col-12 col-md-6 mt-5 mb-5">
+                                <RenderDish dish1 = {props.mydish} />
+                                
+                            </div>
+                            <div className = "col-12 col-md-5 mt-5" width="100%">
+                                <RenderComments user = {props.myuser} totalcomm = {props.totalcomments} Comments = {props.thecomment} dishID = {props.mydish.id} postComm = {props.postComment} addToCart = {props.addToCart}/>
+                                <br></br>
+                                
+                            </div>     
+                        </div>
+                    </FadeTransform>
                 </div>
             </div>
         );

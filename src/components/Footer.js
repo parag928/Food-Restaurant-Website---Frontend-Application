@@ -18,13 +18,13 @@ function MyFooter(props) {
                 <div className="col-7 col-sm-5">
                     <h5>Our Address</h5>
                     <address>
-		              121, Clear Water Bay Road<br />
-		              Clear Water Bay, Kowloon<br />
-		              HONG KONG<br />
-		              <i className="fa fa-phone fa-lg"></i>: +852 1234 5678<br />
-		              <i className="fa fa-fax fa-lg"></i>: +852 8765 4321<br />
-		              <i className="fa fa-envelope fa-lg"></i>: <a href="mailto:confusion@food.net">
-                         confusion@food.net</a>
+		              100 Morris Ct.<br />
+		              Laurel, Maryland 20367<br />
+		              United States<br />
+		              <i className="fa fa-phone fa-lg"></i>:(240) 746-2938 <br />
+		              <i className="fa fa-fax fa-lg"></i>: (240) 837-1022 <br />
+		              <i className="fa fa-envelope fa-lg"></i>: <a href="mailto:foodrest@gmail.com">
+                         foodrest@gmail.com</a>
                     </address>
                 </div>
                 <div className="col-12 col-sm-4 align-self-center">
@@ -38,9 +38,10 @@ function MyFooter(props) {
                     </div>
                 </div>
             </div>
+            <br></br>
             <div className="row justify-content-center">             
                 <div className="col-auto">
-                    <p>© Copyright 2018 Ristorante Con Fusion</p>
+                    <p>© Copyright 2021 The Food Restaurant</p>
                 </div>
             </div>
         </div>

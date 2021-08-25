@@ -7,8 +7,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'font-awesome/css/font-awesome.css';
 import 'bootstrap-social/bootstrap-social.css';
-import $ from 'jquery';
-import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 

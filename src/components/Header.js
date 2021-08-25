@@ -9,42 +9,70 @@ class MyHeader extends Component {
     super(props);
     this.state = {
       NavOpen: false,
-      isModalOpen: false
+      isModalOpen: false,
+      SignUpForm: false,
+      LoggedIn: false
     };
     this.NavbarChange = this.NavbarChange.bind(this);
     this.ModalChange = this.ModalChange.bind(this);
-    this.userLogin = this.userLogin.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.SignUpChange = this.SignUpChange.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout(){
+    this.props.userLogout();
+    this.setState({
+      LoggedIn: !(this.state.LoggedIn)
+    })
   }
 
   NavbarChange(){
     this.setState({
-      NavOpen: !this.state.NavOpen
+      NavOpen: !(this.state.NavOpen)
+    })
+  }
+  
+  SignUpChange(){
+    this.setState({
+      SignUpForm: !(this.state.SignUpForm)
     })
   }
 
   ModalChange(){
     this.setState({
-      isModalOpen: !this.state.isModalOpen
+      isModalOpen: !(this.state.isModalOpen)
     })
   }
-
-  userLogin(event) {
-    this.ModalCHange();
-    alert("Username: " + event.username.value + " Password: " + event.password.value
-        + " Remember: " + event.remember.checked);
-    event.preventDefault();
-  }
-
   
+  handleSubmit(event) {
+    if (this.firstname != null){
+      event.preventDefault();
+      alert('Firstname: ' + this.firstname.value + ' Lastname: ' + this.lastname.value
+        + ' username: ' + this.username.value + ' password: ' + this.password.value);
+      this.props.userSignup(this.firstname.value, this.lastname.value, this.username.value, this.password.value);
+    }
+    else{
+      event.preventDefault();
+      this.ModalChange();
+      this.props.userLogin(this.username.value, this.password.value);
+      if (this.props.myuser != null){
+        alert('Welcome home : ' + this.props.myuser.firstname);
+        this.setState({
+          LoggedIn: !(this.state.LoggedIn)
+      })
+    }
+  }
+  }  
   render() {
     return(
-    <React.Fragment>
-      <Navbar dark expand="md">
+      <div>
+      <Navbar className='mr-auto' dark expand="md">
         <div className="container">
           <NavbarToggler onClick={this.NavbarChange} />
-            <NavbarBrand className="mr-auto" href="/"> <img src='assets/images/logo.png' height="30" width="41" alt='Ristorante Con Fusion' /></NavbarBrand>
+            <NavbarBrand href="/"> <img src='assets/images/logo.png' height="30" width="41" alt='Ristorante Con Fusion' /></NavbarBrand>
             <Collapse isOpen={this.state.isNavOpen} navbar>
-                <Nav navbar>
+              <Nav navbar>
                 <NavItem>
                       <NavLink className="nav-link"  to='/home'><span className="fa fa-home fa-lg"></span> Home</NavLink>
                   </NavItem>
@@ -57,20 +85,32 @@ class MyHeader extends Component {
                   <NavItem>
                       <NavLink className="nav-link" to='/contactus'><span className="fa fa-address-card fa-lg"></span> Contact Us</NavLink>
                   </NavItem>
-                  
                 </Nav>
-                <Nav className="ml-auto" navbar>
-                    <NavItem>
-                        <Button outline dark onClick={this.ModalChange}><span className="fa fa-sign-in fa-lg"></span> Login</Button>
-                    </NavItem>
-                </Nav>
+                
+                  <div>
+                    {
+                      (this.state.LoggedIn === true) ? 
+                  <div>
+                  <Nav className="mr-auto" navbar> 
+                  <NavItem>
+                  <NavLink className="nav-link" to=''> <span className="fa fa-user fa-lg"></span> {this.props.myuser.firstname}</NavLink>
+                  <NavLink className="nav-link" to='/usercart'> <span className="fa fa-user fa-lg"></span> Cart </NavLink>
+                  <Button outline dark onClick={this.handleLogout}><span className="fa fa-sign-out fa-lg"></span> Logout </Button> </NavItem> </Nav> </div>
+                  : 
+                      <div> <Nav className="mr-auto" navbar>
+                      <NavItem>
+                        <Button outline dark onClick={this.ModalChange}><span className="fa fa-sign-in fa-lg"></span> Login </Button>
+                      </NavItem> </Nav> </div>
+                    }
+                    </div>
             </Collapse>
         </div>
       </Navbar>
+    
       <Modal isOpen={this.state.isModalOpen} toggle={this.ModalChange}>
-          <ModalHeader toggle={this.ModalChange}> Login </ModalHeader>
+          <ModalHeader bg-danger toggle={this.ModalChange}> Login </ModalHeader>
             <ModalBody>
-              <Form onSubmit={this.userLogin}>
+              <Form onSubmit={this.handleSubmit}>
                   <FormGroup>
                       <Label htmlFor="username">Username</Label>
                       <Input type="text" id="username" name="username"
@@ -89,20 +129,56 @@ class MyHeader extends Component {
                       </Label>
                   </FormGroup>
                   <Button type="submit" value="submit" color="primary">Login</Button>
-                </Form>
+                  <br></br>
+                  <br></br>
+                  <div className="container">
+                  <div className="row">
+                  <p> Don't have an Account? Create one </p>
+                  <Button className="fa fa-xsm" onClick= {this.SignUpChange} > Here </Button>
+                  </div>
+                  </div>
+              </Form>
+            </ModalBody>
+      </Modal>
+      <Modal isOpen={this.state.SignUpForm} toggle={this.SignUpChange}>
+          <ModalHeader bg-danger toggle={this.SignUpChange}> Signup </ModalHeader>
+            <ModalBody>
+              <Form onSubmit={this.handleSubmit}>
+                  <FormGroup>
+                      <Label htmlFor="firstname">Firstname</Label>
+                      <Input type="text" id="firstname" name="firstname"
+                          innerRef={(input) => this.firstname = input} />
+                  </FormGroup>
+                  <FormGroup>
+                      <Label htmlFor="lastname">Lastname</Label>
+                      <Input type="text" id="lastname" name="lastname"
+                          innerRef={(input) => this.lastname = input}  />
+                  </FormGroup>
+                  <FormGroup>
+                      <Label htmlFor="username">Username</Label>
+                      <Input type="text" id="username" name="username"
+                          innerRef={(input) => this.username = input} />
+                  </FormGroup>
+                  <FormGroup>
+                      <Label htmlFor="password">Password</Label>
+                      <Input type="password" id="password" name="password"
+                          innerRef={(input) => this.password = input}  />
+                  </FormGroup>
+                  <Button type="submit" value="submit" color="primary">Signup</Button>
+              </Form>
             </ModalBody>
       </Modal>
       <Jumbotron>
            <div className="container">
                <div className="row row-header">
                    <div className="col-12 col-sm-8">
-                       <h1>Ristorante con Fusion</h1>
-                       <p>We take inspiration from the World's best cuisines, and create a unique fusion experience. Our lipsmacking creations will tickle your culinary senses!</p>
+                       <h1> Food Restaurant </h1>
+                       <p>The food restaurant website for anyone interested in exploring many unique dishes from all around the world!</p>
                    </div>
                </div>
            </div>
        </Jumbotron>
-    </React.Fragment>
+      </div>
     );
   }
 }

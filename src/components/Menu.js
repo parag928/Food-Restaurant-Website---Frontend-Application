@@ -3,18 +3,25 @@ import {Card, CardImg, CardImgOverlay, CardTitle, Breadcrumb, BreadcrumbItem} fr
 import { Link } from 'react-router-dom';
 import { Loading } from './LoadingLogo';
 import { baseUrl } from '../shared/baseURL';
+import { FadeTransform } from 'react-animation-components';
 
 
     function RenderMenu ({dish}) {
         return (
             <Card >
                 <Link to={`/menu/${dish.id}`} >
-                    <CardImg height = "400px" width= "100%" object src={baseUrl + dish.image} alt={dish.name}/>
-                    <CardImgOverlay>
-                        <CardTitle>
-                            {dish.name}
-                        </CardTitle>
-                    </CardImgOverlay>
+                    <FadeTransform
+                        in
+                        transformProps={{
+                            exitTransform: 'scale(0.5) translateY(-50%)'
+                        }}>
+                        <CardImg height = "400px" width= "100%" object src={baseUrl + dish.image} alt={dish.name}/>
+                        <CardImgOverlay>
+                            <CardTitle>
+                                {dish.name}
+                            </CardTitle>
+                        </CardImgOverlay>
+                    </FadeTransform>
                 </Link>
             </Card>
         );
@@ -68,4 +75,4 @@ import { baseUrl } from '../shared/baseURL';
         );
     };
 
-export default Menu;
+    export default Menu;
